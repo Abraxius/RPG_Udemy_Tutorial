@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using RPG.Movement;
 
+namespace RPG.Control 
+{
 public class PlayerController : MonoBehaviour
 {
     private void Update()
@@ -21,4 +24,5 @@ public class PlayerController : MonoBehaviour
             GetComponent<Mover>().MoveTo(hit.point);
         }
     }
+}
 }

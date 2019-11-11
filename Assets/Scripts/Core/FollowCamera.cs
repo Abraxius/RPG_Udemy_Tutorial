@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace RPG.Core
+{
 public class FollowCamera : MonoBehaviour
 {
     [SerializeField] Transform target;
@@ -10,4 +12,5 @@ public class FollowCamera : MonoBehaviour
     {
         transform.position = target.position;
     }
+}
 }

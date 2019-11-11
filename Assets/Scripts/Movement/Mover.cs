@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+namespace RPG.Movement
+{
 public class Mover : MonoBehaviour
 {
     void Update()
@@ -23,4 +25,5 @@ public class Mover : MonoBehaviour
     {
         GetComponent<NavMeshAgent>().destination = destination;
     }
+}
 }

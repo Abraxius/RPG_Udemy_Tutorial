@@ -4,53 +4,53 @@ using UnityEngine;
 using RPG.Movement;
 using RPG.Combat;
 
-namespace RPG.Control 
+namespace RPG.Control
 {
-public class PlayerController : MonoBehaviour
-{
-    private void Update()
+    public class PlayerController : MonoBehaviour
     {
-        InteractWithCombat();
-        InteractWithMovement();
-    }
-
-    private void InteractWithCombat()
-    {
-        RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
-        foreach (RaycastHit hit in hits) //guckt ob ein angeklicktes Objekt das CombatTarget.cs besitzt
+        private void Update()
         {
-            //guckt ob das raycastete Objekt (hover) ein CombatTarget hat, falls nicht, wird die schleife einfach wieder verlassen
-            CombatTarget target = hit.transform.GetComponent<CombatTarget>();
-            if (target == null) continue; //wenn target == null, schleife verlassen
+            if (InteractWithCombat()) return; //wenn er über enemy hovert gibt es true und macht die darunter liegenden Befehle nicht
+            if (InteractWithMovement()) return; //wenn er über dem Boden Hovert gibt es true
+            print("nothing to do.");
+        }
 
-            if(Input.GetMouseButtonDown(0)) //Falls es ein CombatTarget hat und angeklickt wird, wird Angegriffen
+        private bool InteractWithCombat()
+        {
+            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+            foreach (RaycastHit hit in hits) //guckt ob ein angeklicktes Objekt das CombatTarget.cs besitzt
             {
-                GetComponent<Fighter>().Attack(target);
+                //guckt ob das raycastete Objekt (hover) ein CombatTarget hat, falls nicht, wird die schleife einfach wieder verlassen
+                CombatTarget target = hit.transform.GetComponent<CombatTarget>();
+                if (target == null) continue; //wenn target == null, schleife verlassen
+
+                if (Input.GetMouseButtonDown(0)) //Falls es ein CombatTarget hat und angeklickt wird, wird Angegriffen
+                {
+                    GetComponent<Fighter>().Attack(target);
+                }
+                return true;
             }
+            return false;
         }
-    }
 
-    private void InteractWithMovement() 
-    {
-        if (Input.GetMouseButton(0))
+        private bool InteractWithMovement()
         {
-            MoveToCursor();
+            RaycastHit hit;
+            bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
+            if (hasHit)
+            {
+                if (Input.GetMouseButton(0))
+                {
+                    GetComponent<Mover>().StartMoveAction(hit.point);
+                }
+                return true;
+            }
+            return false;
         }
-    }
 
-    private void MoveToCursor()
-    {
-        RaycastHit hit;
-        bool hasHit = Physics.Raycast(GetMouseRay(), out hit);
-        if (hasHit)
+        private static Ray GetMouseRay()
         {
-            GetComponent<Mover>().MoveTo(hit.point);
+            return Camera.main.ScreenPointToRay(Input.mousePosition);
         }
     }
-
-    private static Ray GetMouseRay() 
-    {
-        return Camera.main.ScreenPointToRay(Input.mousePosition);
-    }
-}
 }

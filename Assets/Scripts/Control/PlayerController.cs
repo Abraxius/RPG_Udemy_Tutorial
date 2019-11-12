@@ -19,10 +19,11 @@ public class PlayerController : MonoBehaviour
         RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
         foreach (RaycastHit hit in hits) //guckt ob ein angeklicktes Objekt das CombatTarget.cs besitzt
         {
+            //guckt ob das raycastete Objekt (hover) ein CombatTarget hat, falls nicht, wird die schleife einfach wieder verlassen
             CombatTarget target = hit.transform.GetComponent<CombatTarget>();
             if (target == null) continue; //wenn target == null, schleife verlassen
 
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButtonDown(0)) //Falls es ein CombatTarget hat und angeklickt wird, wird Angegriffen
             {
                 GetComponent<Fighter>().Attack(target);
             }

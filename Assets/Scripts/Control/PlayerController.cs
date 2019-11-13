@@ -22,7 +22,10 @@ namespace RPG.Control
             {
                 //guckt ob das raycastete Objekt (hover) ein CombatTarget hat, falls nicht, wird die schleife einfach wieder verlassen
                 CombatTarget target = hit.transform.GetComponent<CombatTarget>();
-                if (target == null) continue; //wenn target == null, schleife verlassen
+                if (!GetComponent<Fighter>().CanAttack(target))
+                {
+                    continue;   //wenn false zurück gegeben wird, wird die Schleife verlassen
+                }
 
                 if (Input.GetMouseButtonDown(0)) //Falls es ein CombatTarget hat und angeklickt wird, wird Angegriffen
                 {

@@ -14,6 +14,7 @@ namespace RPG.Control
         [SerializeField] float suspicionTime = 3f;  //Wie lang soll der Enemy den Player suchen?
         [SerializeField] PatrolPath patrolPath; //Muss in der Szene verknüft werden, da der Pfad in der Szene existiert
         [SerializeField] float waypointTolerance = 1f; //Abweichung zum Wegpunkt Toleranz
+        [SerializeField] float waypointDwellTime = 3f; //Wie lange soll der Enemy bei dem Wegpunkt warten bis er weiter läuft
 
         Fighter fighter;
         GameObject player;
@@ -22,6 +23,7 @@ namespace RPG.Control
 
         Vector3 guardPosition;
         float timeSinceLastSawPlayer = Mathf.Infinity;
+        float timeSinceArrivedAtWaypoint = Mathf.Infinity;
         int currentWaypointIndex = 0;
 
         private void Start()
@@ -40,7 +42,6 @@ namespace RPG.Control
 
             if (InAttackRangeOfPlayer() && fighter.CanAttack(player)) //Ist der Spieler in Reichweite und kann angegriffen werden?
             {
-                timeSinceLastSawPlayer = 0;
                 AttackBehaviour();
             }
             else if (timeSinceLastSawPlayer < suspicionTime)
@@ -51,7 +52,13 @@ namespace RPG.Control
             {
                 PartrolBehaviour();
             }
+            UpdateTimers();
+        }
+
+        private void UpdateTimers()
+        {
             timeSinceLastSawPlayer += Time.deltaTime;
+            timeSinceArrivedAtWaypoint += Time.deltaTime;
         }
 
         private void PartrolBehaviour()
@@ -62,12 +69,16 @@ namespace RPG.Control
             {
                 if (AtWaypoint())
                 {
+                    timeSinceArrivedAtWaypoint = 0;
                     CycleWaypoint();
                 }
                 nextPosition = GetCurrentWaypoint();
             }
-            mover.StartMoveAction(nextPosition); //geht an die vorgesehene Position
-                                                  //fighter.Cancel(); bricht das hinterher rennen ab und bleibt einfach stehen
+            if (timeSinceArrivedAtWaypoint > waypointDwellTime)
+            {
+                mover.StartMoveAction(nextPosition); //geht an die vorgesehene Position
+                                                     //fighter.Cancel(); bricht das hinterher rennen ab und bleibt einfach stehen
+            }
         }
 
         private Vector3 GetCurrentWaypoint() //Fragt in PatrolPath.cs nach wo sich der aktuell anzusteuernde Wegpunkt befindet (Position)
@@ -94,6 +105,7 @@ namespace RPG.Control
 
         private void AttackBehaviour()
         {
+            timeSinceLastSawPlayer = 0;
             fighter.Attack(player);
         }
 

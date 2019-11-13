@@ -22,7 +22,6 @@ namespace RPG.Control
 
             if (InteractWithCombat()) return; //wenn er über enemy hovert gibt es true und macht die darunter liegenden Befehle nicht
             if (InteractWithMovement()) return; //wenn er über dem Boden Hovert gibt es true
-            print("nothing to do.");
         }
 
         private bool InteractWithCombat()
@@ -39,7 +38,7 @@ namespace RPG.Control
                     continue;   //wenn false zurück gegeben wird, wird die Schleife verlassen
                 }
 
-                if (Input.GetMouseButtonDown(0)) //Falls es ein CombatTarget hat und angeklickt wird, wird Angegriffen
+                if (Input.GetMouseButton(0)) //Falls es ein CombatTarget hat und angeklickt wird, wird Angegriffen
                 {
                     GetComponent<Fighter>().Attack(target.gameObject);
                 }

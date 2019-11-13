@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace RPG.Combat
+namespace RPG.Core
 {
     public class Health : MonoBehaviour
     {
@@ -30,6 +30,7 @@ namespace RPG.Combat
 
             GetComponent<Animator>().SetTrigger("die");
             isDead = true;
+            GetComponent<ActionScheduler>().CancelCurrentAction();  //Falls Tot, werden alle Aktionen in Schedular verweigert (Angreifen/Laufen)
         }
     }
 }

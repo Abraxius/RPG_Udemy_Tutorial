@@ -11,14 +11,19 @@ namespace RPG.Core
 
         public void StartAction(IAction action)
         {
-            if (currentAction == action) return;
+            if (currentAction == action) return;   
 
             if (currentAction != null)
             {
-                currentAction.Cancel();
+                currentAction.Cancel(); //Wird eine neue Aktion ausgeführt, wird die alte mit Cancel() beendet (Kein Laufen und Angreifen gleichzeitig)
             }
 
             currentAction = action;
+        }
+
+        public void CancelCurrentAction()
+        {
+            StartAction(null);
         }
     }
 }

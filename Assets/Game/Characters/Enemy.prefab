@@ -25,6 +25,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chaseDistance: 5
+  suspicionTime: 5
 --- !u!1001 &2369422043566243966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -96,6 +97,16 @@ PrefabInstance:
         type: 3}
       propertyPath: healthPoints
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: -6006168328415639261, guid: 596cb7ad900455f46a886557a905b820,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2336605380700831522, guid: 596cb7ad900455f46a886557a905b820,
+        type: 3}
+      propertyPath: m_Speed
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 596cb7ad900455f46a886557a905b820, type: 3}
